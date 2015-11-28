@@ -23,6 +23,8 @@ define(['numbers', 'events'], function(numbers, events) {
       });
 
       it('should publish an added event showing the operands passed to the method and the result', function() {
+        var x, length, calls;
+
         spyOn(events, 'publish');
         //spyOn(events, 'publish').and.callThrough();
         //spyOn(events, 'publish').and.returnValue(false);
@@ -44,9 +46,20 @@ define(['numbers', 'events'], function(numbers, events) {
         expect(events.publish.calls.count()).toEqual(1);
 
         numbers.add(2, 3);
+        //events.publish.calls.reset();
         expect(events.publish.calls.count()).toEqual(2);
         expect(events.publish.calls.argsFor(1)).toEqual(['added', {operands: [2, 3], result: 5}]);
         expect(events.publish.calls.argsFor(1)).toEqual([jasmine.any(String), {operands: [2, 3], result: 5}]);
+        expect(events.publish.calls.mostRecent().args).toEqual(['added', {operands: [2, 3], result: 5}]);
+        expect(events.publish.calls.allArgs()).toEqual([
+          ['added', {operands: [1, 2], result: 3}], 
+          ['added', {operands: [2, 3], result: 5}]
+        ]);
+        
+        calls = events.publish.calls.all();
+        for (x = 0, length = calls.length; x < length; x += 1) {
+          expect(calls[x].object.id).toEqual('events');
+        }
       });
 
       afterEach(function() {

@@ -26,6 +26,7 @@ define(function () {
     events[eventName].push(func);
   };
 
+  // See also: expect(calls[x].object.id).toEqual('events');
   self.id = 'events';
 
   return self;
