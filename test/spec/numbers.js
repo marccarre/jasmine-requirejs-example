@@ -91,5 +91,20 @@ define(['numbers', 'events', 'matchers'], function(numbers, events, matchers) {
         expect(numbers.add).toHaveBeenCalled();
       });
     });
+
+    describe('The triviaFactFor method', function() {
+      it('should use Ajax to retrieve trivia fact for the specified number', function() {
+        events.subscribe('trivia', function(data) {
+          expect(data.operands).toEqual(42);
+          expect(data.result).toEqual(jasmine.any(String));
+          // '42 is the number of laws of cricket.'
+          // '42 is the number of museums in Amsterdam (Netherlands has the highest concentration of museums in the world).'
+          // '42 is the number of gallons that one barrel of petroleum holds.'
+          // etc.
+          done();
+        });
+        numbers.triviaFactFor(42);
+      });
+    });
   });
 });

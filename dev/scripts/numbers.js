@@ -1,7 +1,8 @@
 /* global define */
-define(['events'], function(events) {
+define(['events', 'jquery'], function(events, $) { // jQuery registers itself when it detects define/require.
   'use strict';
   var self = {};
+
   self.add = function add() {
     var operands = Array.prototype.slice.call(arguments);
     var total = 0;
@@ -14,7 +15,7 @@ define(['events'], function(events) {
     events.publish('added', {
       operands: operands,
       result: total
-    })
+    });
     return total;
   }
 
@@ -26,5 +27,15 @@ define(['events'], function(events) {
       callback(self.add.apply(this, operands));
     }, timeoutDelay);
   }
+
+  self.triviaFactFor = function triviaFactFor(number) {
+    return $.get('http://numbersapi.com/' + number + '/trivia', function(fact) {
+      events.publish('trivia', {
+        operands: number,
+        result: fact
+      });
+    });
+  };
+
   return self;
 });
