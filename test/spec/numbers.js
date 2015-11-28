@@ -1,11 +1,11 @@
 /* globals define, describe */
-define(['numbers', 'events'], function(numbers, events) {
+define(['numbers', 'events', 'matchers'], function(numbers, events, matchers) {
   'use strict';
 
   describe('The numbers module', function() {
     describe('The add method', function() {
       beforeEach(function() {
-        // TODO
+        jasmine.addMatchers(matchers);
       });
 
       it('should accept one or more numerical arguments and return their sum', function() {
@@ -55,11 +55,16 @@ define(['numbers', 'events'], function(numbers, events) {
           ['added', {operands: [1, 2], result: 3}], 
           ['added', {operands: [2, 3], result: 5}]
         ]);
-        
+
         calls = events.publish.calls.all();
         for (x = 0, length = calls.length; x < length; x += 1) {
           expect(calls[x].object.id).toEqual('events');
         }
+      });
+
+      it('should return numbers that are either odd or even', function() {
+        expect(numbers.add(1, 2)).toBeOdd();
+        expect(numbers.add(1, 3)).not.toBeOdd();
       });
 
       afterEach(function() {
