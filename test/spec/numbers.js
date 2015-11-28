@@ -24,9 +24,29 @@ define(['numbers', 'events'], function(numbers, events) {
 
       it('should publish an added event showing the operands passed to the method and the result', function() {
         spyOn(events, 'publish');
+        //spyOn(events, 'publish').and.callThrough();
+        //spyOn(events, 'publish').and.returnValue(false);
+        //spyOn(events, 'publish').and.callFake(function(name, args) {
+        //  window.alert(name);
+        //});
+        //spyOn(events, 'publish').and.throwError('oops');
+        //expect(function() {
+        //  numbers.add(1, 2);  
+        //}).toThrowError('oops');
+        //events.publish.and.stub();
+        expect(events.publish.calls.any()).toBe(false);
+        expect(events.publish.calls.count()).toEqual(0);
+        
         numbers.add(1, 2);
         expect(events.publish).toHaveBeenCalled();
         expect(events.publish).toHaveBeenCalledWith('added', {operands: [1, 2], result: 3});
+        expect(events.publish.calls.any()).toBe(true);
+        expect(events.publish.calls.count()).toEqual(1);
+
+        numbers.add(2, 3);
+        expect(events.publish.calls.count()).toEqual(2);
+        expect(events.publish.calls.argsFor(1)).toEqual(['added', {operands: [2, 3], result: 5}]);
+        expect(events.publish.calls.argsFor(1)).toEqual([jasmine.any(String), {operands: [2, 3], result: 5}]);
       });
 
       afterEach(function() {

@@ -6,6 +6,8 @@ define(function () {
       events = {};
 
   self.publish = function publish(eventName, data) {
+    // Uncomment to validate: spyOn(events, 'publish').and.callThrough();
+    //alert('callThrough worked!');
     var subscribers, x, length;
     if (!events[eventName]) {
       return false;
