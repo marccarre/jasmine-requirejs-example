@@ -17,5 +17,14 @@ define(['events'], function(events) {
     })
     return total;
   }
+
+  self.addAfterDelay = function addAfterDelay(delay, callback) {
+    var timeoutDelay = Array.prototype.shift.call(arguments);
+    var callback = Array.prototype.shift.call(arguments);
+    var operands = arguments;
+    window.setTimeout(function() {
+      callback(self.add.apply(this, operands));
+    }, timeoutDelay);
+  }
   return self;
 });
